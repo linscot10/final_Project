@@ -1,0 +1,87 @@
+{% extends 'nav.html' %}
+{% block title %} Login{% endblock title %}
+
+{% block style %}
+<style>
+.btn{
+    font-size: 15px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 10px 36px;
+    border-radius: 50px;
+    transition: 0.3s;
+    border: 2px solid #3498db;
+}
+
+ .btn:hover {
+    color: #ffffff;
+    background: #3498db;
+  }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<section id="contact" class="contact section">
+
+    
+    <div class="container section-title" data-aos="fade-up">
+
+<div class='row'>
+    <div class='col-md-2'></div>
+    <div class='col-md-4'>
+        <h1 data-aos="fade-up">Login</h1>
+        <div class="container" data-aos="fade-up" data-aos-delay="400" >
+        
+        </div>
+        
+        {% for message in messages %}
+
+        <div class="alert alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+            <strong></strong> {{ message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          {% endfor %}
+
+        <form action="/auth/login/" method='post'>
+            {% csrf_token %}
+            {% comment %} <div class="form-group form-floating mb-3">
+                <input type="text" id="User_name " class="form-control" placeholder="john doe" required>
+                <label for="User_name ">User_name</label>
+            </div>
+            <div class="form-group form-floating mb-3">
+                <input type="text" id="First_name " class="form-control" placeholder="john doe" required>
+                <label for="First_name ">First_name</label>
+            </div>
+            <div class="form-group form-floating mb-3">
+                <input type="text" id="Last_name  " class="form-control" placeholder="john doe" required>
+                <label for="Last_name ">Last_name</label>
+            </div> {% endcomment %}
+            <div class="form-group form-floating mb-3">
+                <input type="text" name='email' id="email" class="form-control" placeholder="example@gmail.com" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="form-group form-floating mb-3">
+                <input type="password" name='pass1' id="pass1" class="form-control" placeholder="Password" required>
+                <label for="pass1">Password</label>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" class="btn " value="Login">
+            </div>
+            <p id="regMessage"></p>
+            <br>
+            <p> don't  have an account?<a href="/auth/signup/"> Signup</a></p>
+            <p> forgot password?<a href="/auth/request-reset-email/"> Reset</a></p>
+         </form>
+        
+    </div>
+</div>
+</div>
+</section>
+
+{% endblock   %}
+

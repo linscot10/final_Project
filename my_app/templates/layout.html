@@ -7,7 +7,7 @@
     <head>
         <meta charset="utf-8">
          <meta content="width=device-width, initial-scale=1.0" name="viewport">
-         <title>Service Details - Vesperr Bootstrap Template</title>
+         <title>{% block title%} {% endblock title%} </title>
          <meta name="description" content="">
          <meta name="keywords" content="">
        
@@ -30,7 +30,7 @@
        
          <!-- Main CSS File -->
          <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
-       
+       {% block style%} {% endblock style %}
     
        </head>
     <body>
@@ -41,7 +41,7 @@
       <a href="/" class="logo d-flex align-items-center me-auto">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1 class="sitename">Vesperr</h1>
+        <h1 class="sitename">Soko Yetu</h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -68,12 +68,12 @@
               <li><a href="#">Dropdown 4</a></li>
             </ul>
           </li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="/auth/logout/">Logout</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="#about">Get Started</a>
+      <a class="btn-getstarted" href="#about">Welcome {{user.username}}</a>
 
     </div>
   </header>
