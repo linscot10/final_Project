@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from my_app.models import Product,Orders,OrderUpdate
+from my_app.models import Product,Orders,OrderUpdate,Contact
 from math import ceil
 from .key import MpesaPassword,MpesaAccessToken,MpesaCredentials
 import base64
@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
 
 import json
 
@@ -47,9 +48,20 @@ def purchase(request):
     return render(request,'purchase.html',params)
 
 
-
-
-
+def contactus(request):
+    if not request.user.is_authenticated:
+        messages.warning(request,"Login & Try Again")
+        return redirect('/auth/login')
+    if request.method=="POST":
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        desc = request.POST.get('desc', '')
+        contact = Contact(name=name, email=email, phone=phone, desc=desc)
+        contact.save()
+        messages.success(request,"Contact Form is Submitted")
+  
+    return render(request, 'contact.html')
 
 
 def get_mpesa_token():
@@ -200,3 +212,6 @@ def tracker(request):
             return HttpResponse('{}')
 
     return render(request, 'tracker.html')
+
+
+

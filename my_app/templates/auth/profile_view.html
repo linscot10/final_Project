@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+{% block title %} Profile{% endblock title %}
+
+{% block body %}
+<section id="profile" class="profile section">
+    <div class="container section-title" data-aos="fade-up">
+        {% if messages %}
+
+        
+
+        <div class="alert">
+            {% for message in messages %}
+
+            <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                <strong></strong>{{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <!-- <span aria-hidden="true">&times;</span> -->
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
+        {% comment %} <h1>my profile</h1> {% endcomment %}
+        <div class="container  ">
+            <div class="row">
+
+                <div class="col-md-6 mx-auto">
+
+                    {% if profile %}
+                    <h2>Welcome {{ profile.full_names }}!</h2>
+                    <div class="card mt-5 text-center" style="width: 18rem;">
+                        {% if profile.profile_picture %}
+                        <img src="{{ profile.profile_picture.url }}" class="card-img-top img-fluid"
+                            alt="{{ profile.profile_picture.url }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h3 class="card-title">Bio</h3>
+                            <p class="card-text">{{ profile.bio }}</p>
+                            <a href="/auth/profile/edit" class="btn btn-warning">Edit Profile</a>
+                            <a href="/auth/profile/delete/" class="btn btn-danger">Delete Account</a>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <p>You don't have a profile yet. <a href="{% url 'profile_edit' %}">Create one</a>.</p>
+                    {% endif %}
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+</section>
+{% endblock %}

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -37,6 +38,8 @@ class Orders(models.Model):
         return self.name
     
     
+    
+    
 
 class OrderUpdate(models.Model):
     update_id = models.AutoField(primary_key=True)
@@ -46,3 +49,18 @@ class OrderUpdate(models.Model):
 
     def __str__(self):
         return self.update_desc[0:7] + "..."
+    
+    
+class Contact(models.Model):
+    msg_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+    email = models.CharField(max_length=70, default="")
+    phone = models.CharField(max_length=70, default="")
+    desc = models.CharField(max_length=500, default="")
+
+
+    def __str__(self):
+        return self.name
+    
+
+

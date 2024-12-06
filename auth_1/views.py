@@ -25,6 +25,12 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 
 
+from django.contrib.auth.decorators import login_required
+from .models import UserProfile
+from my_app.forms import UserProfileForm
+from django.contrib.auth.models import User
+
+
 
 #threading
 
@@ -65,7 +71,10 @@ def signup(request):
         except Exception as identifier:
             pass        
        
-        user=User.objects.create_user(email,email,pass1)
+        user=User.objects.create_user(email, email, pass1)
+        profile = UserProfile.objects.create(user=user, bio="" )
+        profile.save()
+        
         user.is_active=False
         user.save()
         current_site=get_current_site(request)
@@ -191,3 +200,61 @@ class SetNewPasswordView(View):
              return render(request,'auth/set-new-password.html',context) 
          
         return render(request,'auth/set-new-password.html',context) 
+    
+    
+    
+    
+    
+    
+    
+@login_required
+def profile_view(request):
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        profile = None
+    return render(request, 'auth/profile_view.html', {'profile': profile})
+
+
+
+
+@login_required
+def edit_profile(request):
+    try:
+        # profile = request.user.profile
+        profile , created = UserProfile.objects.get_or_create(user=request.user)
+    except UserProfile.DoesNotExist:
+        profile = None
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user  
+            user_profile.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect('/auth/profile/')  
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = UserProfileForm(instance=profile)
+
+    return render(request, 'auth/profile_edit.html', {'form': form})
+
+
+
+
+
+@login_required
+def delete_profile(request):
+    user = request.user
+    # Delete the associated UserProfile if it exists
+    try:
+        profile = UserProfile.objects.get(user=user)
+        profile.delete()
+    except UserProfile.DoesNotExist:
+        pass
+    # Delete the user
+    user.delete()
+    messages.success(request, "Your account has been deleted successfully.")
+    return redirect('/auth/signup/')  # Redirect to signup page after deletion
